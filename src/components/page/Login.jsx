@@ -19,7 +19,7 @@ const Login = () => {
                         </div>
                         <div className='w-[368px] mt-[50px]'>
                             <button className='w-full font-open font-semibold py-[20px] px-[80px] rounded-[86px] text-[20px] text-white bg-primary relative'>
-                                <span className='relative z-[50]'>Login to Continue</span>
+                                <span className='z-[50]'>Login to Continue</span>
                                 <span className='absolute top-1/2 left-1/2 -translate-1/2 bg-[#5B36F5]/25 w-[78px] h-[28px] blur-[10px]'></span>
                             </button>
                             <p className='text-[#03014C] font-open text-[14px] text-center mt-[35px]'>Don’t have an account ? <span className='text-[#EA6C00] font-bold'>Sign Up</span></p>

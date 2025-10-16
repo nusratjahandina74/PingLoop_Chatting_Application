@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
+import { Oval } from 'react-loader-spinner';
 const SignUp = () => {
     const auth = getAuth();
     const navigate = useNavigate()
@@ -90,12 +91,12 @@ const SignUp = () => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     console.log(errorMessage);
-                    
+
                     toast.error("This email is already registered")
-                    if(errorCode == "auth/email-already-in-use"){
+                    if (errorCode == "auth/email-already-in-use") {
                         setEmailError("This email is already registered")
                     }
-                  
+
                 });
         }
     }
@@ -105,22 +106,22 @@ const SignUp = () => {
 
     return (
         <div className='flex items-center'>
-           
+
             <div className='w-1/2'>
                 <div className='flex justify-end mr-[70px]'>
-                <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick={false}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-            transition={Bounce}
-            />
+                    <ToastContainer
+                        position="top-center"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick={false}
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="colored"
+                        transition={Bounce}
+                    />
                     <div>
                         <h3 className='font-secondary font-bold text-[34px] text-[#11175D]'>Get started with easily register</h3>
                         <p className='font-secondary text-[20px] text-[#808080] mt-[13px]'>Free register and you can enjoy it</p>
@@ -163,9 +164,22 @@ const SignUp = () => {
 
                                 <span className='z-[50]'>Sign up</span>
                                 <span className='absolute top-1/2 left-1/2 -translate-1/2 bg-[#5B36F5]/25 w-[78px] h-[28px] blur-[10px]'></span>
+                                {/* <div>
+                            <Oval
+                                visible={true}
+                                height="80"
+                                width="80"
+                                color="#4fa94d"
+                                ariaLabel="oval-loading"
+                                wrapperStyle={{}}
+                                wrapperClass=""
+                            />
+                        </div> */}
+
                             </button>
                             <p className='text-[#03014C] font-open text-[14px] text-center mt-[35px]'>Already  have an account ? <Link to="/login"><span className='text-[#EA6C00] font-bold'>Sign In</span></Link></p>
                         </div>
+
 
 
 

@@ -17,6 +17,7 @@ const SignUp = () => {
     const [PasswordError, setPasswordError] = useState("")
 
     const [show, setShow] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const handleEmail = (e) => {
         setEmail(e.target.value);
@@ -77,6 +78,7 @@ const SignUp = () => {
         console.log(email, fullName, password);
 
         if (email && fullName && password && (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) && (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password))) {
+            setLoading(true)
             createUserWithEmailAndPassword(auth, email, password)
                 .then((user) => {
                     console.log(user, "user");
@@ -91,6 +93,7 @@ const SignUp = () => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     console.log(errorMessage);
+                    setLoading(false)
 
                     toast.error("This email is already registered")
                     if (errorCode == "auth/email-already-in-use") {
@@ -157,30 +160,34 @@ const SignUp = () => {
                             <p className='font-secondary bg-red-500 px-2 rounded-[4px] mt-[5px] text-white text-[16px] font-medium text-center mx-auto'>{PasswordError}</p>
 
                         </div>
-                        <div className='w-[368px] mt-[50px]'>
+                        <div>
+                         {
+                            loading ?  <div className='w-[368px] flex justify-center' >
+                            <Oval
+                                visible={true}
+                                height="40"
+                                width="40"
+                                color="#4fa94d"
+                                ariaLabel="oval-loading"
+                                wrapperStyle={{}}
+                                wrapperClass=""
+                            />
+                        </div> : <div className='w-[368px] mt-[50px]'>
                             <button
                                 onClick={handleSignUp}
                                 className='w-full font-secondary font-semibold py-[20px] px-[100px] rounded-[86px] text-[20px] text-white bg-primary relative cursor-pointer'>
 
                                 <span className='z-[50]'>Sign up</span>
                                 <span className='absolute top-1/2 left-1/2 -translate-1/2 bg-[#5B36F5]/25 w-[78px] h-[28px] blur-[10px]'></span>
-                                {/* <div>
-                            <Oval
-                                visible={true}
-                                height="80"
-                                width="80"
-                                color="#4fa94d"
-                                ariaLabel="oval-loading"
-                                wrapperStyle={{}}
-                                wrapperClass=""
-                            />
-                        </div> */}
-
+                        
+                                
                             </button>
                             <p className='text-[#03014C] font-open text-[14px] text-center mt-[35px]'>Already  have an account ? <Link to="/login"><span className='text-[#EA6C00] font-bold'>Sign In</span></Link></p>
                         </div>
-
-
+                         }
+                        </div>
+                        
+                       
 
 
                     </div>

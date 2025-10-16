@@ -89,8 +89,12 @@ const SignUp = () => {
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
-                    toast.error("This email already in use")
-
+                    console.log(errorMessage);
+                    
+                    toast.error("This email is already registered")
+                    if(errorCode == "auth/email-already-in-use"){
+                        setEmailError("This email is already registered")
+                    }
                   
                 });
         }

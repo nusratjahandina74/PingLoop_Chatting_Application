@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
 import sign_up from '../../assets/sign_up.png'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { Bounce, ToastContainer, toast } from 'react-toastify';
 const SignUp = () => {
+    const auth = getAuth();
+    const navigate = useNavigate()
     const [email, setEmail] = useState("")
     const [fullName, setFullName] = useState("")
     const [password, setPassword] = useState("")
@@ -68,13 +72,51 @@ const SignUp = () => {
                 setPasswordError("Password must be a minimum of 8 characters including number, Upper, Lower And one special character")
             }
         }
+
+        console.log(email, fullName, password);
+
+        if (email && fullName && password && (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) && (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password))) {
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((user) => {
+                    console.log(user, "user");
+                    toast.success("Sign Up Successfully Done")
+                    setTimeout(() => {
+                        navigate("/login")
+                    }, 3000)
+
+
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    toast.error("This email already in use")
+
+                  
+                });
+        }
     }
-    console.log(email, fullName, password);
+
+
+
 
     return (
         <div className='flex items-center'>
+           
             <div className='w-1/2'>
                 <div className='flex justify-end mr-[70px]'>
+                <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            transition={Bounce}
+            />
                     <div>
                         <h3 className='font-secondary font-bold text-[34px] text-[#11175D]'>Get started with easily register</h3>
                         <p className='font-secondary text-[20px] text-[#808080] mt-[13px]'>Free register and you can enjoy it</p>
@@ -84,7 +126,7 @@ const SignUp = () => {
                                 type="email"
                                 value={email}
                                 onChange={handleEmail}
-                                className='w-full py-[20px] pr-[66px] pl-[38px] border-2 border-[#11175D] rounded-[8px]'  placeholder='Email Address' />
+                                className='w-full py-[20px] pr-[66px] pl-[38px] border-2 border-[#11175D] rounded-[8px]' placeholder='Email Address' />
                             <p className='font-secondary bg-red-500 px-2 rounded-[4px] mt-[5px] text-white text-[16px] font-medium text-center mx-auto'>{emailError}</p>
                         </div>
                         <div className='relative w-[368px] mt-[53px]'>
@@ -92,7 +134,7 @@ const SignUp = () => {
                             <input
                                 type="text"
                                 onChange={handleFullName}
-                                className='w-full py-[20px] pr-[66px] pl-[38px] border-2 border-[#11175D] rounded-[8px]'  placeholder='Full Name' />
+                                className='w-full py-[20px] pr-[66px] pl-[38px] border-2 border-[#11175D] rounded-[8px]' placeholder='Full Name' />
                             <p className='font-secondary bg-red-500 px-2 rounded-[4px] mt-[5px] text-white text-[16px] font-medium text-center mx-auto'>{fullNameError}</p>
 
                         </div>
@@ -102,11 +144,11 @@ const SignUp = () => {
                                 type={show ? "text" : "password"}
                                 onChange={handlePassword}
                                 className='w-full py-[20px] pr-[66px] pl-[38px] border-2 border-[#11175D] rounded-[8px]' placeholder='Password' />
-                                <div onClick={() =>setShow(!show)} className='absolute top-[40%] right-[10%]'>
-                                    {
-                                        show ? <FaEye /> : <FaEyeSlash />
-                                    }
-                                </div>
+                            <div onClick={() => setShow(!show)} className='absolute top-[40%] right-[10%]'>
+                                {
+                                    show ? <FaEye /> : <FaEyeSlash />
+                                }
+                            </div>
                             <p className='font-secondary bg-red-500 px-2 rounded-[4px] mt-[5px] text-white text-[16px] font-medium text-center mx-auto'>{PasswordError}</p>
 
                         </div>

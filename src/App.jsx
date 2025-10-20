@@ -3,6 +3,7 @@ import { RouterProvider } from "react-router/dom";
 import SignUp from "./components/page/SignUp";
 import Login from "./components/page/Login";
 import firebaseConfig from "./components/firebase/firebaseConfig";
+import ForgotPassword from "./components/page/ForgotPassword";
 function App() {
 const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/forgotpassword",
+    element: <ForgotPassword />,
   },
 ]);
   return (

@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import sign_up from '../../assets/sign_up.png'
 import { Link, useNavigate } from 'react-router'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
-import { Oval } from 'react-loader-spinner';
+import { ThreeDots } from 'react-loader-spinner';
 const SignUp = () => {
     const auth = getAuth();
     const navigate = useNavigate()
@@ -81,22 +81,28 @@ const SignUp = () => {
             setLoading(true)
             createUserWithEmailAndPassword(auth, email, password)
                 .then((user) => {
+                    sendEmailVerification(auth.currentUser)
                     console.log(user, "user");
-                    toast.success("Sign Up Successfully Done")
+                    toast.success("Sign Up Successfully Done. Please verify your email")
                     setTimeout(() => {
                         navigate("/login")
                     }, 3000)
-
+                    setLoading(false)
+                    setEmail("")
+                    setFullName("")
+                    setPassword("")
 
                 })
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     console.log(errorMessage);
-                    setLoading(false)
+
+
+
 
                     toast.error("This email is already registered")
-                    if (errorCode == "auth/email-already-in-use") {
+                    if (errorCode.includes("auth/email-already-in-use")) {
                         setEmailError("This email is already registered")
                     }
 
@@ -141,6 +147,7 @@ const SignUp = () => {
                             <p className='absolute top-[-10px] left-[20px] bg-white px-[18px] tracking-[2px] font-secondary font-semibold text-[13px] text-[#11175D]'>Full Name</p>
                             <input
                                 type="text"
+                                value={fullName}
                                 onChange={handleFullName}
                                 className='w-full py-[20px] pr-[66px] pl-[38px] border-2 border-[#11175D] rounded-[8px]' placeholder='Full Name' />
                             <p className='font-secondary bg-red-500 px-2 rounded-[4px] mt-[5px] text-white text-[16px] font-medium text-center mx-auto'>{fullNameError}</p>
@@ -149,6 +156,7 @@ const SignUp = () => {
                         <div className='relative w-[368px] mt-[53px]'>
                             <p className='absolute top-[-10px] left-[20px] bg-white px-[18px] tracking-[2px] font-secondary font-semibold text-[13px] text-[#11175D]'>Password</p>
                             <input
+                                value={password}
                                 type={show ? "text" : "password"}
                                 onChange={handlePassword}
                                 className='w-full py-[20px] pr-[66px] pl-[38px] border-2 border-[#11175D] rounded-[8px]' placeholder='Password' />
@@ -161,33 +169,35 @@ const SignUp = () => {
 
                         </div>
                         <div>
-                         {
-                            loading ?  <div className='w-[368px] flex justify-center' >
-                            <Oval
-                                visible={true}
-                                height="40"
-                                width="40"
-                                color="#4fa94d"
-                                ariaLabel="oval-loading"
-                                wrapperStyle={{}}
-                                wrapperClass=""
-                            />
-                        </div> : <div className='w-[368px] mt-[50px]'>
-                            <button
-                                onClick={handleSignUp}
-                                className='w-full font-secondary font-semibold py-[20px] px-[100px] rounded-[86px] text-[20px] text-white bg-primary relative cursor-pointer'>
+                            <div className='w-[368px] mt-[50px]'>
+                                <button
+                                    onClick={handleSignUp}
+                                    className='w-full font-secondary font-semibold py-[20px] px-[100px] rounded-[86px] text-[20px] text-white bg-primary relative cursor-pointer'>
+                                    {
+                                        loading ? <div className='flex justify-center' >
+                                            <ThreeDots
+                                                visible={true}
+                                                height="30"
+                                                width="30"
+                                                color="#fff"
+                                                radius="9"
+                                                ariaLabel="three-dots-loading"
+                                                wrapperStyle={{}}
+                                                wrapperClass=""
+                                            />
+                                        </div> : <span className='z-[50]'>Sign up</span>
+                                    }
 
-                                <span className='z-[50]'>Sign up</span>
-                                <span className='absolute top-1/2 left-1/2 -translate-1/2 bg-[#5B36F5]/25 w-[78px] h-[28px] blur-[10px]'></span>
-                        
-                                
-                            </button>
-                            <p className='text-[#03014C] font-open text-[14px] text-center mt-[35px]'>Already  have an account ? <Link to="/login"><span className='text-[#EA6C00] font-bold'>Sign In</span></Link></p>
+                                    <span className='absolute top-1/2 left-1/2 -translate-1/2 bg-[#5B36F5]/25 w-[78px] h-[28px] blur-[10px]'></span>
+
+
+                                </button>
+                                <p className='text-[#03014C] font-open text-[14px] text-center mt-[35px]'>Already  have an account ? <Link to="/login"><span className='text-[#EA6C00] font-bold'>Sign In</span></Link></p>
+                            </div>
+
                         </div>
-                         }
-                        </div>
-                        
-                       
+
+
 
 
                     </div>

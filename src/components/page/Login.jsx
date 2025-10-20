@@ -3,7 +3,11 @@ import login from '../../assets/login.png'
 import google_icon from '../../assets/google_icon.png'
 import { Link } from 'react-router'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { Bounce, ToastContainer, toast } from 'react-toastify';
 const Login = () => {
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
@@ -32,16 +36,55 @@ const Login = () => {
         }
 
 
+        if (email && password && (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password))) {
+            signInWithEmailAndPassword(auth, email, password)
+                .then((user) => {
+                    console.log(user, "login");
+                    toast.success("Login Successfully Done")
 
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    if (errorCode.includes("auth/invalid-credential")) {
+                        toast.error("Please provide right email and password")
+                    }
+                })
+        }
+    };
+    const handleGoogleSignIn = () => {
+        signInWithPopup(auth, provider)
+            .then((user) => {
+                console.log(user);
+                
+            }).catch((error) => {
+                const errorCode = error.code;
+                console.log(errorCode);
+                
+            });
     }
-    console.log(email, password);
+
     return (
         <div><div className='flex items-center'>
             <div className='w-1/2'>
                 <div className='flex justify-end mr-[217px]'>
+                    <ToastContainer
+                        position="top-center"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick={false}
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="colored"
+                        transition={Bounce}
+                    />
                     <div>
                         <h3 className='font-open font-bold text-[34px] text-[#11175D]'>Login to your account!</h3>
-                        <button className='flex items-center font-open font-semibold text-[14px] mt-[29px] border border-[#808080] rounded-[16px] py-[23px] px-[42px]'><span><img src={google_icon} alt="#google_icon" /></span><span className='ml-[9px]'>Login with Google</span></button>
+                        <button
+                            onClick={handleGoogleSignIn}
+                            className='flex items-center font-open font-semibold text-[14px] mt-[29px] border border-[#808080] rounded-[16px] py-[23px] px-[42px]'><span><img src={google_icon} alt="#google_icon" /></span><span className='ml-[9px]'>Login with Google</span></button>
                         <div className='relative w-[368px] mt-[40px]'>
                             <p className='absolute top-[-10px] left-[0px] bg-white tracking-[2px] font-open font-semibold text-[13px] text-[#11175D]'>Email Address</p>
                             <input
@@ -57,21 +100,22 @@ const Login = () => {
                                 type={show ? "text" : "password"}
                                 onChange={handlePassword}
                                 className='w-full py-[20px] pr-[66px] border-b-2 border-[#11175D] rounded-[8px] outline-none' placeholder='Enter Your Password' />
-                                <div onClick={() =>setShow(!show)} className='absolute top-[40%] right-[10%]'>
-                                    {
-                                        show ? <FaEye /> : <FaEyeSlash />
-                                    }
-                                </div>
+                            <div onClick={() => setShow(!show)} className='absolute top-[40%] right-[10%]'>
+                                {
+                                    show ? <FaEye /> : <FaEyeSlash />
+                                }
+                            </div>
                             <p className='font-secondary bg-red-500 px-2 rounded-[4px] mt-[5px] text-white text-[16px] font-medium text-center mx-auto'>{PasswordError}</p>
                         </div>
                         <div className='w-[368px] mt-[50px]'>
                             <button
                                 onClick={handleLogin}
-                                className='w-full font-open font-semibold py-[20px] px-[80px] rounded-[86px] text-[20px] text-white bg-primary relative'>
+                                className='w-full font-open font-semibold py-[20px] px-[80px] rounded-[86px] text-[20px] text-white bg-primary relative cursor-pointer'>
                                 <span className='z-[50]'>Login to Continue</span>
                                 <span className='absolute top-1/2 left-1/2 -translate-1/2 bg-[#5B36F5]/25 w-[78px] h-[28px] blur-[10px]'></span>
                             </button>
-                            <p className='text-[#03014C] font-open text-[14px] text-center mt-[35px]'>Don’t have an account ? <Link to="/signup"><span className='text-[#EA6C00] font-bold'>Sign Up</span></Link> </p>
+                            <Link to="/forgotpassword"><p className='text-[#EA6C00] font-medium font-open text-[14px] text-center mt-[20px] cursor-pointer '>Forgot Password</p></Link>
+                            <p className='text-[#03014C] font-open text-[14px] text-center mt-[10px]'>Don’t have an account ? <Link to="/signup"><span className='text-[#EA6C00] font-bold'>Sign Up</span></Link> </p>
                         </div>
 
 

@@ -4,8 +4,13 @@ import SignUp from "./components/page/SignUp";
 import Login from "./components/page/Login";
 import firebaseConfig from "./components/firebase/firebaseConfig";
 import ForgotPassword from "./components/page/ForgotPassword";
+import Home from "./components/page/Home";
 function App() {
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
   {
     path: "/signup",
     element: <SignUp />,
@@ -27,3 +32,4 @@ const router = createBrowserRouter([
 }
 
 export default App
+

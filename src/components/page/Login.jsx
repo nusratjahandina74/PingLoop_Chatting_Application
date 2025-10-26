@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 import login from '../../assets/login.png'
 import google_icon from '../../assets/google_icon.png'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { userInfo } from '../../slices/userSlice';
 const Login = () => {
+    const dispatch = useDispatch()
     const auth = getAuth();
+    const navigate = useNavigate()
     const provider = new GoogleAuthProvider();
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -40,6 +44,11 @@ const Login = () => {
             signInWithEmailAndPassword(auth, email, password)
                 .then((user) => {
                     console.log(user, "login");
+                    dispatch(userInfo(user.user))
+                    localStorage.setItem("userInfo", JSON.stringify(user))
+                    setTimeout(()=>{
+                        navigate("/")
+                    },2000)
                     toast.success("Login Successfully Done")
 
                 })

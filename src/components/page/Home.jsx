@@ -1,17 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import EmailVerify from './EmailVerify';
+import { useNavigate } from 'react-router';
+import Sidebar from '../Sidebar/Sidebar';
 
 const Home = () => {
     const auth = getAuth();
+    const navigate = useNavigate()
     const data = useSelector(state=>(state.userInfo.value))
-    console.log(data);
+
     const [verify, setVerify] = useState(false)
+    const [loading, setLoading] = useState(true)
+    useEffect(()=>{
+      if(!data){
+            navigate("/login")
+    }
+    })
 onAuthStateChanged(auth, (user) => {
-  if (user && user.emailVerified) {
+  if (user.emailVerified) {
     setVerify(true)
-    
   } 
+  setLoading(false)
 });
     // if(data.emailVerified){
     //     setVerify(true)
@@ -21,17 +31,17 @@ onAuthStateChanged(auth, (user) => {
     //     setVerify(true)
     //  }
     // },[])
-    
+    if(loading){
+      return null
+    }
   return (
     <div>
         {
             verify ?
-            <p>Home</p> : 
-            <div className='w-full h-screen bg-primary text-primary flex justify-center items-center font-open'> 
-                <div className='bg-white py-10 px-2 w-[500px] rounded-lg'>
-                      <h2 className='font-bold text-2xl text-center'>Please verify your email</h2>
-                </div>
-            </div>
+            <div>
+              <Sidebar />
+            </div> : 
+            <EmailVerify />
         }
     </div>
   )

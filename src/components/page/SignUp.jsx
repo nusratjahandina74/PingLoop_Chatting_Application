@@ -205,7 +205,7 @@ const SignUp = () => {
                 </div>
             </div>
             <div className='w-1/2'>
-                <img className='h-screen w-full object-cover' src={sign_up} alt="#sign_up" />
+                <img className='h-screen w-full object-cover overflow-hidden' src={sign_up} alt="#sign_up" />
             </div>
         </div>
     )

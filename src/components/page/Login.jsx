@@ -134,7 +134,7 @@ const Login = () => {
                 </div>
             </div>
             <div className='w-1/2'>
-                <img className='h-screen w-full object-cover' src={login} alt="#login" />
+                <img className='h-screen w-full object-cover overflow-hidden' src={login} alt="#login" />
             </div>
         </div></div>
     )

@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 const firebaseConfig = {
   apiKey: "AIzaSyCYBbnBnfiE9S5rp5Ynt4Rfzdsx7RwnS18",
   authDomain: "pingloop-b13fb.firebaseapp.com",
+  databaseURL: "https://pingloop-b13fb-default-rtdb.firebaseio.com",
   projectId: "pingloop-b13fb",
   storageBucket: "pingloop-b13fb.firebasestorage.app",
   messagingSenderId: "49166563305",

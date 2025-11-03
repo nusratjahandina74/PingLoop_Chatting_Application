@@ -5,8 +5,10 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import { ThreeDots } from 'react-loader-spinner';
+import { getDatabase, ref, set } from "firebase/database";
 const SignUp = () => {
     const auth = getAuth();
+    const db = getDatabase();
     const navigate = useNavigate()
     const [email, setEmail] = useState("")
     const [fullName, setFullName] = useState("")
@@ -84,6 +86,11 @@ const SignUp = () => {
                     sendEmailVerification(auth.currentUser)
                     console.log(user, "user");
                     toast.success("Sign Up Successfully Done. Please verify your email")
+
+                    set(ref(db, 'users/' + user.user.uid), {
+                        username: fullName,
+                        email: email,
+                    });
                     setTimeout(() => {
                         navigate("/login")
                     }, 3000)

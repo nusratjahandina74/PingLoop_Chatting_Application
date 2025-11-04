@@ -18,8 +18,6 @@ const Sidebar = () => {
       signOut(auth)
         .then(() => {
           localStorage.removeItem('userinfo');
-          localStorage.removeItem('token');
-          localStorage.removeItem('firebase:authUser');
           navigate('/login');
         })
         .catch((error) => {

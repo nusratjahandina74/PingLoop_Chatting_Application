@@ -24,19 +24,11 @@ const Home = () => {
     }
   })
   onAuthStateChanged(auth, (user) => {
-    if (user.emailVerified) {
+    if (user?.emailVerified) {
       setVerify(true)
     }
     setLoading(false)
   });
-  // if(data.emailVerified){
-  //     setVerify(true)
-  // }
-  // useEffect(()=>{
-  //  if(data.emailVerified){
-  //     setVerify(true)
-  //  }
-  // },[])
   if (loading) {
     return null
   }

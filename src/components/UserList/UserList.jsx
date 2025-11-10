@@ -1,29 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import { BsThreeDotsVertical } from "react-icons/bs";
 import friends4 from '../../assets/friends4.png'
-import { getDatabase, onValue, ref } from "firebase/database";
-import { getAuth } from "firebase/auth";
+import { getDatabase, onValue, ref, set } from "firebase/database";
+import { useSelector } from 'react-redux';
 const UserList = () => {
+  const data = useSelector((selector) => (selector.userInfo.value.user))
+  console.log(data?.uid, "loginData");
   const db = getDatabase();
-  const auth = getAuth();
   const [userList, setUserList] = useState([])
   useEffect(() => {
     const userRef = ref(db, "users")
     onValue(userRef, (snapshot) => {
       let arr = []
-      const currentUser = auth.currentUser;
       snapshot.forEach((item) => {
-        const userData = item.val();
-       if (userData.uid !== currentUser?.uid) {
-          arr.push(userData);
+        if (data?.uid !== item.key) {
+          arr.push(item.val())
         }
       })
       setUserList(arr);
 
     })
-  },[])
+  }, [])
   console.log(userList);
+  const handleFriendRequest = (item) => {
+     console.log("ok", item);
+    set(ref(db, 'friendRequest/'), {
+      senderName : data.displayName,
+      receiverName : item.username
+    });
 
+  }
   return (
     <div className='shadow-lg rounded-lg px-5 py-3 font-primary text-primary'>
       <div className='flex justify-between items-center'>
@@ -41,7 +47,9 @@ const UserList = () => {
                   <p className='font-medium text-[10px] text-[#4D4D4D]'>{user.email}</p>
                 </div>
               </div>
-              <button className='font-semibold text-[20px] text-[#FFFFFF] bg-primary px-[8px] rounded-[5px] mr-[20px]'>
+              <button
+                onClick={() => handleFriendRequest(user)}
+                className='font-semibold text-[20px] text-[#FFFFFF] bg-primary px-[8px] rounded-[5px] mr-[20px] cursor-pointer'>
                 +
               </button>
             </div>

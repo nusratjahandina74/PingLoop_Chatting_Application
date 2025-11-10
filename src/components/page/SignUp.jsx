@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import sign_up from '../../assets/sign_up.png'
 import { Link, useNavigate } from 'react-router'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import { ThreeDots } from 'react-loader-spinner';
 import { getDatabase, ref, set } from "firebase/database";
@@ -85,6 +85,9 @@ const SignUp = () => {
                 .then((user) => {
                     sendEmailVerification(auth.currentUser)
                     console.log(user, "user");
+                    updateProfile(auth.currentUser, {
+                        displayName: fullName
+                    })
                     toast.success("Sign Up Successfully Done. Please verify your email")
 
                     set(ref(db, 'users/' + user.user.uid), {

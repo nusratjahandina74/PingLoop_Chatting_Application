@@ -24,7 +24,7 @@ const Home = () => {
     }
   })
   onAuthStateChanged(auth, (user) => {
-    if (user?.emailVerified) {
+    if (user?.emailVerified || data?.user?.displayName) {
       setVerify(true)
     }
     setLoading(false)

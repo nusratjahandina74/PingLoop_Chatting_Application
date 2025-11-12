@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userInfo } from '../../slices/userSlice';
 const Sidebar = () => {
   const auth = getAuth();
-  const data = useSelector((selector)=> (selector.userInfo.value.user) )
+  const data = useSelector((selector)=> (selector?.userInfo?.value) )
   const dispatch = useDispatch()
   const navigate = useNavigate();
   const handleSignOut = () => {
@@ -32,7 +32,7 @@ const Sidebar = () => {
         <img src={profile} alt="profile" />
       </div>
       <div className='flex justify-center text-xl font-primary font-bold mt-2'>
-        <p>{data?.displayName}</p>
+        <p>{data?.displayName || data?.user?.displayName}</p>
       </div>
 
       <div className='relative after:absolute after:content-[" "] after:top-0 after:left-0 after:w-[161px] after:h-full after:bg-white after:z-[-1] z-1 after:ml-[25px] after:rounded-l-3xl before:absolute before:content-[" "] before:top-0 before:right-0  before:rounded-tl-lg before:rounded-bl-lg before:shadow-[-2px_0px_4px_0px_rgba(0,0,0,0.25)] mt-[78px] before:h-full before:w-[10px] before:bg-primary py-[20px] flex justify-center'>

@@ -7,6 +7,7 @@ const UserList = () => {
   const data = useSelector((selector) => (selector?.userInfo?.value?.user))
   console.log(data?.uid, "loginData");
   const db = getDatabase();
+
   const [userList, setUserList] = useState([])
   useEffect(() => {
     const userRef = ref(db, "users")
@@ -46,6 +47,18 @@ const UserList = () => {
   }, [])
   console.log(friendRequest);
 
+  const [friendList, setfriendList] = useState([])
+  useEffect(() => {
+    const friendRef = ref(db, "friend")
+    onValue(friendRef, (snapshot) => {
+      let arr = []
+      snapshot.forEach((item) => {
+        arr.push(item.val().receiverId + item.val().senderId)
+      })
+      setfriendList(arr);
+    })
+  }, [])
+ console.log(friendList);
   return (
     <div className='shadow-lg rounded-lg px-5 py-3 font-primary text-primary'>
       <div className='flex justify-between items-center'>
@@ -64,20 +77,35 @@ const UserList = () => {
                 </div>
               </div>
               {
-                friendRequest.includes(data?.uid + user.userid) ||
-                  friendRequest.includes(user.userid + data?.uid)
-                  ?
-                  <button
-                    className='font-semibold text-[20px] text-[#FFFFFF] bg-primary px-[8px] rounded-[5px] mr-[20px] cursor-pointer'>
-                    -
-                  </button> 
-                   :
-                  <button
-                    onClick={() => handleFriendRequest(user)}
-                    className='font-semibold text-[20px] text-[#FFFFFF] bg-primary px-[8px] rounded-[5px] mr-[20px] cursor-pointer'>
-                    +
-                  </button>
+                friendList.includes(data?.uid + user.userid) ||
+                  friendList.includes(user.userid + data?.uid)
+                  ? (
+                    <button
+                      className='font-semibold text-[20px] text-[#FFFFFF] bg-primary px-[8px] rounded-[5px] mr-[20px] cursor-pointer'>
+                      Friend
+                    </button>
+                  )
+                  : (
+                    friendRequest.includes(data?.uid + user.userid) ||
+                      friendRequest.includes(user.userid + data?.uid)
+                      ? (
+                        <button
+                          className='font-semibold text-[20px] text-[#FFFFFF] bg-primary px-[8px] rounded-[5px] mr-[20px] cursor-pointer'>
+                          -
+                        </button>
+                      )
+
+                      :
+                      (
+                        <button
+                          onClick={() => handleFriendRequest(user)}
+                          className='font-semibold text-[20px] text-[#FFFFFF] bg-primary px-[8px] rounded-[5px] mr-[20px] cursor-pointer'>
+                          +
+                        </button>
+                      )
+                  )
               }
+
 
             </div>
           ))

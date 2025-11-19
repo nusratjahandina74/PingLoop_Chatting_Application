@@ -10,34 +10,54 @@ const Friends = () => {
   console.log(data?.uid, "friendData");
   const [friendList, setfriendList] = useState([])
 
-  useEffect(() => {
-    const friendRef = ref(db, "friend")
-    onValue(friendRef, (snapshot) => {
-      let arr = []
-      snapshot.forEach((item) => {
-        if(data?.uid == item.val().receiverId || data?.uid == item.val().senderId){
-        arr.push(item.val())
-        }
-      })
-      setfriendList(arr);
-    })
-  }, [])
-  console.log(friendList);
+useEffect(() => {
+  const friendRef = ref(db, "friend");
+  onValue(friendRef, (snapshot) => {
+    const arr = [];
+    snapshot.forEach((item) => {
+      
+      if (data?.uid === item.val().receiverId || data?.uid === item.val().senderId) {
+        arr.push({ ...item.val(), key: item.key });
+      }
+    });
+    setfriendList(arr);
+  });
+}, []);
 
-  const handleBlock = (item)=>  { 
-  console.log(item); 
-  set(push(ref(db, "block")), { 
-    receiverName: item.receiverName, 
-    receiverId: item.receiverId, 
-    senderName: item.senderName, 
-    senderId: item.senderId
-  }).then(()=>{
-    remove(ref(db, "friend/" + item.userId))
-  }).catch((error)=>{
-    console.log(error);
+//   const handleBlock = (item)=>  { 
+//   console.log(item); 
+//   set(push(ref(db, "block")), { 
+//     blockerId: data?.uid, 
+//     blockerName: data.displayName, 
+//     blockedId: item.userid, 
+//     blockedName: item.username
+//   }).then(()=>{
+//     remove(ref(db, "friend/" + item.userId))
+//   }).catch((error)=>{
+//     console.log(error);
     
+//   })
+// }
+
+const handleBlock = (item) => {
+
+  const blockedId = data.uid === item.receiverId ? item.senderId : item.receiverId;
+  const blockedName = data.uid === item.receiverId ? item.senderName : item.receiverName;
+
+  set(push(ref(db, "block")), {
+    blockerId: data.uid,
+    blockerName: data.displayName,
+    blockedId: blockedId,
+    blockedName: blockedName
   })
-}
+  .then(() => {
+    remove(ref(db, "friend/" + item.key))
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+};
+
   return (
     <div className='shadow-lg rounded-lg px-5 py-3 font-primary text-primary'>
       <div className='flex justify-between items-center'>

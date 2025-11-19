@@ -34,7 +34,9 @@ const BlockedUser = () => {
           <div className='flex items-center'>
             <img src={friends1} alt="#friends1" />
             <div className='ml-[14px]'>
-              <h4 className='font-semibold text-[14px]'>{item.recieverName}</h4>
+              <h4 className='font-semibold text-[14px]'>
+                  {item.blockedName}
+                </h4>
               <p className='font-medium text-[10px] text-[#4D4D4D]'>Today, 8:56pm</p>
             </div>
           </div>

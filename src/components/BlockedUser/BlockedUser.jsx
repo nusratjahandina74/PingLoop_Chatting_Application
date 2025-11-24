@@ -8,24 +8,29 @@ const BlockedUser = () => {
 
   const data = useSelector((selector) => selector?.userInfo?.value?.user);
    console.log(data?.uid, "blockData");
-  const [blockUser, setBlockUser] = useState([]);
+  const [blockList, setBlockList] = useState([]);
   const db = getDatabase();
 
   useEffect(() => {
-    const blockUserRef = ref(db, "block");
-    onValue(blockUserRef, (snapshot) => {
-      let arr = [];
-      snapshot.forEach((item) => {
-        arr.push({ ...item.val(), key: item.key });
-      });
-      setBlockUser(arr);
+  const blockUserRef = ref(db, "block");
+  onValue(blockUserRef, (snapshot) => {
+    let arr = [];
+    snapshot.forEach((item) => {
+      if (item.val().blockerId === data.uid) { 
+        arr.push({
+          ...item.val(),
+          key: item.key,
+        });
+      }
     });
-  }, []);
+    setBlockList(arr);
+  });
+}, []);
+console.log(blockList);
 
   const handleUnblock = (item) => {
     remove(ref(db, "block/" + item.key));
   };
-
   return (
     <div className='shadow-lg rounded-lg px-5 py-3 font-primary text-primary mt-10'>
       <div className='flex justify-between items-center'>
@@ -35,7 +40,7 @@ const BlockedUser = () => {
 
       <div className='px-2 h-[400px] overflow-y-scroll custom-scrollbar'>
         {
-          blockUser.map((item) => (
+          blockList.map((item) => (
             <div key={item.key} className='flex justify-between items-center mt-[17px] border-b-2 border-[#b0a9a9] pb-[10px]'>
               <div className='flex items-center'>
                 <img src={friends1} alt="#friends1" />
@@ -44,12 +49,19 @@ const BlockedUser = () => {
                   <p className='font-medium text-[10px] text-[#4D4D4D]'>Today, 8:56pm</p>
                 </div>
               </div>
-              <button
-                onClick={() => handleUnblock(item)}
-                className='font-semibold text-[20px] text-[#FFFFFF] bg-primary px-[8px] rounded-[5px]'
-              >
-                unblock
-              </button>
+             
+ 
+    
+ {item.blockerId === data.uid && (
+  <button
+    onClick={() => handleUnblock(item)}
+    className="font-semibold text-[20px] text-white bg-primary px-2 rounded-[5px]"
+  >
+    Unblock
+  </button>
+)}
+
+ 
             </div>
           ))
         }

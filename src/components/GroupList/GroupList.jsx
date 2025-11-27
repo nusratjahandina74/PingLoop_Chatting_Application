@@ -75,18 +75,18 @@ const GroupList = () => {
 
       <div className='flex justify-between items-center'>
         <h3 className='font-semibold text-[20px]'>Groups List</h3>
-        {/* {
+        {
           show ?
             <button
               onClick={handleGroup}
               className='font-semibold text-[20px] text-white bg-primary 
               px-[18px] rounded-[5px] py-1'>Go Back</button>
-            : */}
+            :
             <button
               onClick={handleGroup}
               className='font-semibold text-[20px] text-white bg-primary 
               px-[18px] rounded-[5px] py-1'>Create Group</button>
-       {/* } */}
+        } 
       </div>
       {!show && (
         <div className='px-2 h-[400px] overflow-y-scroll custom-scrollbar'>

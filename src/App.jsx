@@ -1,10 +1,12 @@
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import SignUp from "./components/page/SignUp";
+import firebaseConfig from "./components/firebase/firebaseConfig"
 import Login from "./components/page/Login";
-import firebaseConfig from "./components/firebase/firebaseConfig";
 import ForgotPassword from "./components/page/ForgotPassword";
 import Home from "./components/page/Home";
+import Message from "./components/Message/Message";
+import Setting from "./components/Setting/Setting";
 function App() {
 const router = createBrowserRouter([
   {
@@ -22,6 +24,14 @@ const router = createBrowserRouter([
   {
     path: "/forgotpassword",
     element: <ForgotPassword />,
+  },
+  {
+    path: "/message",
+    element: <Message />,
+  },
+  {
+    path: "/setting",
+    element: <Setting />,
   },
 ]);
   return (

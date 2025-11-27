@@ -71,6 +71,16 @@ const Login = () => {
                 
             });
     }
+// const handleGoogleSignIn = () => {
+//     signInWithPopup(auth, provider)
+//         .then((result) => {
+//             console.log("Google Success:", result.user);
+//         })
+//         .catch((error) => {
+//             console.log("Google Error:", error);
+//             toast.error(error.message);
+//         });
+// };
 
     return (
         <div><div className='flex items-center'>

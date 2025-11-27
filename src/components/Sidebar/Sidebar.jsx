@@ -5,10 +5,10 @@ import { AiFillMessage } from "react-icons/ai";
 import { IoSettingsOutline } from "react-icons/io5";
 import { ImExit } from "react-icons/im";
 import { getAuth, signOut } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { userInfo } from '../../slices/userSlice';
-const Sidebar = () => {
+const Sidebar = ({active}) => {
   const auth = getAuth();
   const data = useSelector((selector)=> (selector?.userInfo?.value) )
   const dispatch = useDispatch()
@@ -35,16 +35,40 @@ const Sidebar = () => {
         <p>{data?.displayName || data?.user?.displayName}</p>
       </div>
 
-      <div className='relative after:absolute after:content-[" "] after:top-0 after:left-0 after:w-[161px] after:h-full after:bg-white after:z-[-1] z-1 after:ml-[25px] after:rounded-l-3xl before:absolute before:content-[" "] before:top-0 before:right-0  before:rounded-tl-lg before:rounded-bl-lg before:shadow-[-2px_0px_4px_0px_rgba(0,0,0,0.25)] mt-[78px] before:h-full before:w-[10px] before:bg-primary py-[20px] flex justify-center'>
-        <SlHome className='text-[46px] text-primary' />
+      <div className={`relative after:absolute after:content-[" "] after:top-0
+       after:left-0 after:w-[161px] after:h-full ${active == "home" ? "after:bg-white" :
+         "after:bg-transparent"} after:z-[-1] 
+       z-1 after:ml-[25px] after:rounded-l-3xl before:absolute before:content-[" "] 
+       before:top-0 before:right-0  before:rounded-tl-lg before:rounded-bl-lg 
+       before:shadow-[-2px_0px_4px_0px_rgba(0,0,0,0.25)] mt-[78px] before:h-full 
+       before:w-[10px] before:bg-primary py-[20px] flex justify-center`}>
+        <Link to="/">
+        <SlHome className={`text-[46px] ${active=="home" ? "text-primary" : "text-[#C3C3C3]"} `} />
+        </Link>
       </div>
 
-      <div className='mt-[57px] flex justify-center'>
-        <AiFillMessage className='text-[46px] text-[#C3C3C3]' />
+      <div className={`relative after:absolute after:content-[" "] after:top-0
+       after:left-0 after:w-[161px] after:h-full ${active == "message" ? "after:bg-white" : 
+        "after:bg-transparent"} after:z-[-1] 
+       z-1 after:ml-[25px] after:rounded-l-3xl before:absolute before:content-[" "] 
+       before:top-0 before:right-0  before:rounded-tl-lg before:rounded-bl-lg 
+       before:shadow-[-2px_0px_4px_0px_rgba(0,0,0,0.25)] mt-[78px] before:h-full 
+       before:w-[10px] before:bg-primary py-[20px] flex justify-center`}>
+        <Link to="/message">
+        <AiFillMessage className={`text-[46px] ${active=="message" ? "text-primary" : "text-[#C3C3C3]"} `} />
+        </Link>
       </div>
 
-      <div className='mt-[57px] flex justify-center'>
-        <IoSettingsOutline className='text-[46px] text-[#C3C3C3]' />
+      <div className={`relative after:absolute after:content-[" "] after:top-0
+       after:left-0 after:w-[161px] after:h-full ${active == "setting" ? "after:bg-white" :
+         "after:bg-transparent"} after:z-[-1] 
+       z-1 after:ml-[25px] after:rounded-l-3xl before:absolute before:content-[" "] 
+       before:top-0 before:right-0  before:rounded-tl-lg before:rounded-bl-lg 
+       before:shadow-[-2px_0px_4px_0px_rgba(0,0,0,0.25)] mt-[78px] before:h-full 
+       before:w-[10px] before:bg-primary py-[20px] flex justify-center`}>
+        <Link to="/setting">
+        <IoSettingsOutline className={`text-[46px] ${active=="setting" ? "text-primary" : "text-[#C3C3C3]"} `} />
+        </Link>
       </div>
       <div
         onClick={handleSignOut}

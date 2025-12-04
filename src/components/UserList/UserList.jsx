@@ -7,7 +7,6 @@ const UserList = () => {
   const data = useSelector((selector) => (selector?.userInfo?.value?.user))
   console.log(data?.uid, "loginData");
   const db = getDatabase();
-
   const [userList, setUserList] = useState([])
   useEffect(() => {
     const userRef = ref(db, "users")
@@ -31,22 +30,18 @@ const UserList = () => {
       receiverId: item.userid
     });
   }
-
   const [friendRequest, setfriendRequest] = useState([])
   useEffect(() => {
     const friendrequestRef = ref(db, "friendRequest")
     onValue(friendrequestRef, (snapshot) => {
       let arr = []
       snapshot.forEach((item) => {
-
         arr.push(item.val().receiverId + item.val().senderId)
-
       })
       setfriendRequest(arr);
     })
   }, [])
   console.log(friendRequest);
-
   const [friendList, setfriendList] = useState([])
   useEffect(() => {
     const friendRef = ref(db, "friend")
@@ -59,8 +54,6 @@ const UserList = () => {
     })
   }, [])
   console.log(friendList);
-
-
   const [blockList, setBlockList] = useState([]);
   useEffect(() => {
     const blockRef = ref(db, "block");
@@ -73,15 +66,80 @@ const UserList = () => {
     });
   }, []);
   console.log(blockList);
-
+  const [filteUserList, setFilterUserList] = useState([])
+  const handleSearch = (e) => {
+    let arr = []
+    if (e.target.value.length == 0) {
+      setFilterUserList([])
+    } else {
+      userList.filter((item) => {
+        if(item.username.toLowerCase().includes(e.target.value.toLowerCase())){
+          arr.push(item)
+          setFilterUserList(arr)
+        }
+      })
+    }
+  }
+  console.log(filteUserList);
+  
   return (
     <div className='shadow-lg rounded-lg px-5 py-3 font-primary text-primary'>
       <div className='flex justify-between items-center'>
         <h3 className='font-semibold text-[20px]'>User List</h3>
         <BsThreeDotsVertical className='text-[20px]' />
       </div>
+      <div>
+        <input
+          onChange={handleSearch}
+          type="text"
+          className='border p-[5px] w-[300px]' />
+      </div>
       <div className='px-2 h-[400px] overflow-y-scroll custom-scrollbar'>
         {
+          filteUserList.length > 0 ?
+          filteUserList.map((user) => (
+            <div className='flex justify-between items-center mt-[17px] border-b-2
+             border-[#b0a9a9] pb-[10px]'>
+              <div className='flex items-center'>
+                <img src={friends4} alt="#friends4" />
+                <div className='ml-[14px]'>
+                  <h4 className='font-semibold text-[14px]'>{user.username}</h4>
+                  <p className='font-medium text-[10px] text-[#4D4D4D]'>{user.email}</p>
+                </div>
+              </div>
+              {
+                blockList.some(
+                  (b) =>
+                    (b.blockerId === data.uid && b.blockedId === user.userid) ||
+                    (b.blockerId === user.userid && b.blockedId === data.uid)
+                ) ? (
+                  <button className='font-semibold text-[20px] text-[#FFFFFF] bg-red-500 px-[8px] rounded-[5px] mr-[20px]'>
+                    Blocked
+                  </button>
+                ) :
+                  friendList.includes(data?.uid + user.userid) ||
+                    friendList.includes(user.userid + data?.uid) ? (
+                    <button className='font-semibold text-[20px] text-[#FFFFFF] bg-primary px-[8px] rounded-[5px] mr-[20px] cursor-pointer'>
+                      Friend
+                    </button>
+                  ) :
+                    friendRequest.includes(data?.uid + user.userid) ||
+                      friendRequest.includes(user.userid + data?.uid) ? (
+                      <button className='font-semibold text-[20px] text-[#FFFFFF] bg-primary px-[8px] rounded-[5px] mr-[20px] cursor-pointer'>
+                        -
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleFriendRequest(user)}
+                        className='font-semibold text-[20px] text-[#FFFFFF] bg-primary px-[8px] rounded-[5px] mr-[20px] cursor-pointer'>
+                        +
+                      </button>
+                    )
+              }
+            </div>
+          ))
+          :
+          
           userList.map((user) => (
             <div className='flex justify-between items-center mt-[17px] border-b-2 border-[#b0a9a9] pb-[10px]'>
               <div className='flex items-center'>
@@ -127,6 +185,4 @@ const UserList = () => {
     </div>
   )
 }
-
-
 export default UserList

@@ -13,32 +13,23 @@ const SignUp = () => {
     const [email, setEmail] = useState("")
     const [fullName, setFullName] = useState("")
     const [password, setPassword] = useState("")
-
     const [emailError, setEmailError] = useState("")
     const [fullNameError, setFullNameError] = useState("")
     const [PasswordError, setPasswordError] = useState("")
-
     const [show, setShow] = useState(false)
     const [loading, setLoading] = useState(false)
-
     const handleEmail = (e) => {
         setEmail(e.target.value);
         setEmailError("");
     }
-
-
     const handleFullName = (e) => {
         setFullName(e.target.value);
         setFullNameError("");
     }
-
-
     const handlePassword = (e) => {
         setPassword(e.target.value)
         setPasswordError("")
     }
-
-
     const handleSignUp = () => {
 
         if (!email) {
@@ -70,15 +61,12 @@ const SignUp = () => {
         //         setPasswordError("Password must be 8 Characters.")
         //     }
         // }
-
         else {
             if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
                 setPasswordError("Password must be a minimum of 8 characters including number, Upper, Lower And one special character")
             }
         }
-
         console.log(email, fullName, password);
-
         if (email && fullName && password && (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) && (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password))) {
             setLoading(true)
             createUserWithEmailAndPassword(auth, email, password)
@@ -101,16 +89,11 @@ const SignUp = () => {
                     setEmail("")
                     setFullName("")
                     setPassword("")
-
                 })
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     console.log(errorMessage);
-
-
-
-
                     toast.error("This email is already registered")
                     if (errorCode.includes("auth/email-already-in-use")) {
                         setEmailError("This email is already registered")
@@ -119,10 +102,6 @@ const SignUp = () => {
                 });
         }
     }
-
-
-
-
     return (
         <div className='flex items-center'>
 
@@ -161,7 +140,6 @@ const SignUp = () => {
                                 onChange={handleFullName}
                                 className='w-full py-[20px] pr-[66px] pl-[38px] border-2 border-[#11175D] rounded-[8px]' placeholder='Full Name' />
                             <p className='font-secondary bg-red-500 px-2 rounded-[4px] mt-[5px] text-white text-[16px] font-medium text-center mx-auto'>{fullNameError}</p>
-
                         </div>
                         <div className='relative w-[368px] mt-[53px]'>
                             <p className='absolute top-[-10px] left-[20px] bg-white px-[18px] tracking-[2px] font-secondary font-semibold text-[13px] text-[#11175D]'>Password</p>
@@ -176,7 +154,6 @@ const SignUp = () => {
                                 }
                             </div>
                             <p className='font-secondary bg-red-500 px-2 rounded-[4px] mt-[5px] text-white text-[16px] font-medium text-center mx-auto'>{PasswordError}</p>
-
                         </div>
                         <div>
                             <div className='w-[368px] mt-[50px]'>
@@ -197,19 +174,11 @@ const SignUp = () => {
                                             />
                                         </div> : <span className='z-[50]'>Sign up</span>
                                     }
-
                                     <span className='absolute top-1/2 left-1/2 -translate-1/2 bg-[#5B36F5]/25 w-[78px] h-[28px] blur-[10px]'></span>
-
-
                                 </button>
                                 <p className='text-[#03014C] font-open text-[14px] text-center mt-[35px]'>Already  have an account ? <Link to="/login"><span className='text-[#EA6C00] font-bold'>Sign In</span></Link></p>
                             </div>
-
                         </div>
-
-
-
-
                     </div>
 
                 </div>
@@ -220,5 +189,4 @@ const SignUp = () => {
         </div>
     )
 }
-
 export default SignUp

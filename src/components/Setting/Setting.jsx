@@ -3,7 +3,6 @@ import Sidebar from '../Sidebar/Sidebar'
 import Friends from '../Friends/Friends'
 import ProfileSetting from '../ProfileSetting/ProfileSetting'
 import AccountSetting from '../AccountSetting/AccountSetting'
-
 const Setting = () => {
   return (
     <div> 

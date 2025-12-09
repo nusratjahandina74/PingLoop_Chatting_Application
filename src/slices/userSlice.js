@@ -11,9 +11,17 @@ export const userSlice = createSlice({
     userInfo: (state, action) => {
       state.value = action.payload
     },
-    
+    userNameUpdate: (state, action) => {
+      if (state.value && state.value.user) {
+        state.value.user.displayName = action.payload;
+      }
+    },
+    statusUpdate: (state, action) => {
+      state.value.user.status = action.payload;
+    }
+
   },
 })
 
-export const { userInfo } = userSlice.actions
+export const { userInfo, userNameUpdate, statusUpdate } = userSlice.actions
 export default userSlice.reducer

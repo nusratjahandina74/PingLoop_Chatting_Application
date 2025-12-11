@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAuth, updateProfile } from 'firebase/auth';
 import { getDatabase, ref, set } from 'firebase/database';
 import { statusUpdate, userNameUpdate } from '../../slices/userSlice';
-
 const ProfileSetting = () => {
     const data = useSelector((selector) => selector?.userInfo?.value?.user)
     const [show, setShow] = useState(false)
@@ -24,7 +23,7 @@ const ProfileSetting = () => {
         if (storedData) {
             const parsedData = JSON.parse(storedData);
             dispatch(userNameUpdate(parsedData.user.displayName));
-             dispatch(statusUpdate(parsedData.user.status || ""));
+            dispatch(statusUpdate(parsedData.user.status || ""));
         }
         }
     }, [data, dispatch])
@@ -103,6 +102,7 @@ const ProfileSetting = () => {
                             type='text'
                             value={showDisplayName}
                             onChange={(e) => setShowDisplayName(e.target.value)}
+                            onKeyDown={(e) => e.key === "Enter" && handleEditName()}
                             placeholder={data?.displayName}
                             className='border w-[250px] px-[5px] py-[10px]'
                         />
@@ -125,6 +125,7 @@ const ProfileSetting = () => {
                             type='text'
                             value={showEditStatus}
                             onChange={(e) => setShowEditStatus(e.target.value)}
+                            onKeyDown={(e) => e.key === "Enter" && handleEditStatus()}
                             placeholder={data?.status}
                             className='border w-[250px] px-[5px] py-[10px]'
                         />

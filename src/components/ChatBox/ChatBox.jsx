@@ -23,8 +23,8 @@ const ChatBox = () => {
     }
     const messageRef = push(ref(db, "message/"))
     set(messageRef, {
-      senderId: data.uid,
-      senderName: data.displayName,
+      senderId: data?.uid,
+      senderName: data?.displayName,
       receiverId: activeData.id,
       receiverName: activeData.name,
       message: message,
@@ -39,8 +39,8 @@ const ChatBox = () => {
       let arr = []
       snapshot.forEach((item) => {
         if (
-          (data.uid == item.val().senderId && activeData.id == item.val().receiverId) ||
-          (data.uid == item.val().receiverId && activeData.id == item.val().senderId)
+          (data?.uid == item.val().senderId && activeData.id == item.val().receiverId) ||
+          (data?.uid == item.val().receiverId && activeData.id == item.val().senderId)
         ) {
           arr.push(item.val())
         }
@@ -70,7 +70,7 @@ const ChatBox = () => {
       <div className='border-b pb-[30px] border-[#000000]/25'>
         <div className='py-[56px]'>
           {messageList.map((item, index) => (
-            data.uid == item.senderId ? 
+            data?.uid == item.senderId ? 
               <div key={index} className='my-2 text-end'>
                 <div className='relative'>
                   <p className='px-[52px] py-[13px] bg-primary inline-block font-medium text-[16px] rounded-[10px] text-white'>

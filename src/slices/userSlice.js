@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  value: localStorage.getItem("userInfo") ? JSON.parse(localStorage.getItem("userInfo")) : null,
+  value: localStorage.getItem("userInfo") ? JSON.parse(localStorage.getItem("userInfo")) : null
 }
 
 export const userSlice = createSlice({
@@ -17,9 +17,10 @@ export const userSlice = createSlice({
       }
     },
     statusUpdate: (state, action) => {
-      state.value.user.status = action.payload;
+      if (state.value && state.value.user) {
+        state.value.user.status = action.payload;
+      }
     }
-
   },
 })
 

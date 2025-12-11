@@ -86,7 +86,7 @@ const ProfileSetting = () => {
                     <img src={profile} alt="profile" />
                     <div>
                         <h4 className='font-semibold text-[25px]'>{data?.displayName}</h4>
-                        <p className='text-[20px]'>{data?.status}</p>
+                        <p className='text-[20px]'>{data?.status || "Stay Home Stay Safe"}</p>
                     </div>
                 </div>
             </div>

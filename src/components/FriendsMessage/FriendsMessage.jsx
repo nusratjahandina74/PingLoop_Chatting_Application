@@ -25,7 +25,7 @@ const FriendsMessage = () => {
         });
     }, []);
 const handleMessage = (item) => {
-    if (data.uid === item.senderId) {
+    if (data?.uid === item.senderId) {
         dispatch(activeInfo({
             name: item.receiverName,
             id: item.receiverId

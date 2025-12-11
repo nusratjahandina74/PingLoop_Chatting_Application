@@ -98,7 +98,6 @@ const SignUp = () => {
                     if (errorCode.includes("auth/email-already-in-use")) {
                         setEmailError("This email is already registered")
                     }
-
                 });
         }
     }
@@ -180,7 +179,6 @@ const SignUp = () => {
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div className='w-1/2'>
